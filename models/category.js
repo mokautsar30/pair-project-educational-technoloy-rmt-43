@@ -13,18 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Category.hasMany(models.Course, {as: "Course"});
     }
-    static async searchByName(val){
+    static async searchByName(value){
       let categories = await Category.findAll({
         include: {
                   association: "Course",
                   attributes: ["id", "title", "description", "CategoryId"]  
               }
       });
-      if(val){
+      if(value){
         categories = await Category.findAll({
           where:{
             category:{
-              [Op.iLike] : `%${val}%`
+              [Op.iLike] : `%${value}%`
             }
           },
           include: {
