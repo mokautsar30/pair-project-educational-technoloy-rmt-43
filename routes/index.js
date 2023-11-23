@@ -23,7 +23,7 @@ router.use(function (req, res, next) {
     }
 });
 const isRole = function (req, res, next) {
-    if(req.session.role === "instructor"){
+    if(req.session.role === "admin"){
         next();
     }else{
         const error = "You have no acces";

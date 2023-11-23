@@ -68,16 +68,19 @@ class Controller{
     }
 
 // ini belum di konekin
-    static async coursePage(req, res){
-     try {
-        const {id} = req.params;
-        const course = await Course.findByPk(id);
-        res.render("coursePage", {course});
-     } catch (error) {
-        console.log(error);
-        res.send(error.message);
-     }   
+static async coursePage(req, res) {
+    try {
+      const { id } = req.params;
+      const course = await Course.findByPk(id, {
+        attributes: ["id", "title", "duration", "description", "image", "CategoryId", "createdAt", "updatedAt"],
+      });
+      
+      res.render("coursePage", { course });
+    } catch (error) {
+      console.log(error);
+      res.send(error);
     }
+  }
 
     static async editForm(req, res){
         const {errors} = req.query;
