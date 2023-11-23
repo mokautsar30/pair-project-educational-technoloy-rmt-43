@@ -18,7 +18,7 @@ router.use(function (req, res, next) {
     if(req.session.UserId){
         next();
     }else{
-        const error = "Please login first!!";
+        const error = "You must login first";
         res.redirect(`/login?error=${error}`);
     }
 });
@@ -26,18 +26,18 @@ const isRole = function (req, res, next) {
     if(req.session.role === "admin"){
         next();
     }else{
-        const error = "You have no acces";
+        const error = "Sorry, You have no acces";
         res.redirect(`/login?error=${error}`);
     }
 };
 
 
 
-router.get("/home", Controller.home);   //ke home dg data kategori
+router.get("/home", Controller.home); 
 
-router.get("/course/:id", Controller.coursePage); // ke home dengan detail course, video
+router.get("/course/:id", Controller.coursePage); 
 
-router.get("/course/edit/:id", isRole, Controller.editForm);    //ke form edit
+router.get("/course/edit/:id", isRole, Controller.editForm); 
 
 router.post("/course/edit/:id", isRole, Controller.updateForm);
 

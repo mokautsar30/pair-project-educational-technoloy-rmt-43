@@ -105,8 +105,8 @@ static async coursePage(req, res) {
         const {id} = req.params;
         
         try {
-            const {title, duration, description, CategoryId, InstructorId, videoUrl} = req.body;
-            await Course.update({title, duration, description, CategoryId, InstructorId, videoUrl}, 
+            const {title, duration, description, CategoryId} = req.body;
+            await Course.update({title, duration, description, CategoryId}, 
                 {where: 
                     {id: id}
                 });
