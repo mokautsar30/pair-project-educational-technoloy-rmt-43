@@ -68,62 +68,55 @@ class Controller{
     }
 
 // ini belum di konekin
-    static async coursePage(req, res){
-     try {
-        const {id} = req.params;
-        const course = await Course.findByPk(id);
-        res.render("coursePage", {course});
-     } catch (error) {
+static async coursePage(req, res) {
+    try {
+      const { id } = req.params;
+      const course = await Course.findByPk(id, {
+        attributes: ["id", "title", "duration", "description", "image", "CategoryId", "createdAt", "updatedAt"],
+      });
+      
+      res.render("coursePage", { course });
+    } catch (error) {
+      console.log(error);
+      res.send(error);
+    }
+  }
+
+  static async editForm(req, res) {
+    const { errors } = req.query;
+    let err;
+
+    if (errors) {
+        err = errors.split(',');
+        console.log(err);
+    }
+
+    try {
+        const { id } = req.params;
+        const course = await Course.findByPk(id, {
+            include: [models.User, models.Category]
+        });
+        res.render("editForm", { course, err });
+    } catch (error) {
         console.log(error);
         res.send(error.message);
-     }   
     }
-
-    static async editForm(req, res){
-        const {errors} = req.query;
-        let err;
-
-        if(errors){
-            err = errors.split(',');
-            console.log(err);
-        }
-
-        try {
-            const {id} = req.params;
-            const course = await Course.findByPk(id);
-            res.render("editForm", {course, err});
-        } catch (error) {
-            console.log(error);
-            res.send(error.message);
-        }
-    }
+}
 
     static async updateForm(req, res){
-        const {id} = req.params;
-        
         try {
-            const {title, duration, description, CategoryId, InstructorId, videoUrl} = req.body;
-            await Course.update({title, duration, description, CategoryId, InstructorId, videoUrl}, 
-                {where: 
-                    {id: id}
-                });
-            res.redirect("/home");
+            res.send("updateform")
         } catch (error) {
-            if(error.name === "SequelizeValidationError"){
-                let errors = error.errors.map((er) => {
-                 return er.message
-                }); 
-                // res.send(errors);
-                res.redirect(`/course/edit/${id}?errors=${errors}`); 
-             } else {
-                 res.send(error);
-             }
+            res.send(error)
         }
     }
     
     static async deleteCourse(req, res){
         try {
-            const deleted = await Course.findByPk(req.params.id)
+            // const deleted = await Course.findByPk(req.params.id)
+            const deleted = await Course.findByPk(id, {
+                attributes: ["id", "title", "duration", "description", "image", "CategoryId", "createdAt", "updatedAt"],
+              });
             await Course.destroy({where: {id: req.params.id}});
             res.redirect(`/home?CourseTitle=${deleted.title}&CourseDesc=${deleted.description}`);
         } catch (error) {

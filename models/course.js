@@ -17,10 +17,43 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Course.init({
-    title: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Title is required"
+        },
+        notEmpty: {
+          msg: "Title is required"
+        }
+      }
+    },
     duration: DataTypes.INTEGER,
-    description: DataTypes.STRING,
-    image: DataTypes.STRING,
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "description is required"
+        },
+        notEmpty: {
+          msg: "description is required"
+        }
+      }
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "image is required"
+        },
+        notEmpty: {
+          msg: "image is required"
+        }
+      }
+    },
     CategoryId: DataTypes.INTEGER
   }, {
     sequelize,
